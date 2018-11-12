@@ -7,15 +7,23 @@ using System.Threading.Tasks;
 
 namespace Summer.Dbcontex
 {
-    public class SummerContext : DbContext
+    public class SummerContext : DbContext, ISummerContext
     {
+
+        
+        public SummerContext(DbContextOptions<SummerContext> options) : base(options)
+        {
+            
+        }        
+
+
+
         public DbSet<Client> Clients { get; set; }
         //public DbSet<Course> Courses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=SummerDB;Persist Security Info=True;User ID=Dev;Password=123" );
-
+            //optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CBA_Database") );     
 
         }
 

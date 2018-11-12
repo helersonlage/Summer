@@ -13,11 +13,17 @@ using Summer.Model;
 namespace Summer.Controllers
 {
     [Route("api/[controller]")]
-    public class ClientController : ControllerBase
+    public class ClientController : ControllerBase 
     {
 
-        private SummerContext db = new SummerContext();
+        private readonly ISummerContext db;
+       
 
+        public ClientController(ISummerContext context)
+        {
+            db = context;           
+        }
+        
 
         [HttpGet]
         [Route("", Name = "Get")]
@@ -46,7 +52,7 @@ namespace Summer.Controllers
             db.Clients.Add(client);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = client.ClientID }, client);
+            return Ok(client.ClientID);
         }
 
         [HttpPut]
@@ -60,7 +66,7 @@ namespace Summer.Controllers
 
             try
             {
-                db.Entry(client).State = EntityState.Modified;
+               db.Entry(client).State = EntityState.Modified;
                 db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
